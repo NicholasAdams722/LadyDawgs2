@@ -278,8 +278,14 @@
       width: 100%;
     }
     @media (max-width: 767px) {
-      .hero-content { grid-template-columns: 1fr; padding: 3rem 1.5rem 4rem; }
-      .hero-visual { order: -1; }
+      .hero-content { grid-template-columns: 1fr; padding: 1.5rem 1.5rem 3rem; gap: 1rem; }
+      .hero-visual { order: -1; display: flex; justify-content: center; }
+      .hero-visual img { max-width: 180px; }
+      .hero-h1 .line-lady,
+      .hero-h1 .line-dawgs { font-size: 68px !important; }
+      .hero-sub { margin-top: .75rem; font-size: 1rem; }
+      .hero-ctas { margin-top: 1rem; }
+      .hero-note { margin-top: .75rem; }
     }
     .hero-label {
       font-family: 'Permanent Marker', cursive;
