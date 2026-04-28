@@ -715,6 +715,106 @@
       padding-top: 1.5rem;
       border-top: 1px solid rgba(255,255,255,.04);
     }
+
+    /* ── A-Frame Menu Board ── */
+    .aframe-section {
+      background: #1C0F05;
+      padding: 5rem 0 8rem;
+    }
+    .aframe-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .aframe-board {
+      position: relative;
+      width: 100%;
+      z-index: 2;
+      padding: 22px;
+      border-radius: 6px;
+      background:
+        repeating-linear-gradient(90deg,
+          transparent 0px, transparent 10px,
+          rgba(0,0,0,.07) 10px, rgba(0,0,0,.07) 11px),
+        linear-gradient(160deg,
+          #A0693A 0%, #7A4B22 18%, #C08040 35%,
+          #7A4B22 52%, #A0693A 68%, #5C3010 85%, #8B5A2B 100%);
+      box-shadow:
+        0 8px 40px rgba(0,0,0,.75),
+        0 2px 8px rgba(0,0,0,.5),
+        inset 0 2px 4px rgba(255,255,255,.12),
+        inset 0 -2px 4px rgba(0,0,0,.3);
+    }
+    .aframe-board img {
+      display: block;
+      width: 100%;
+      border-radius: 2px;
+    }
+    /* corner bolts */
+    .bolt {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #D4A853, #7A5A20 60%, #3A2A10);
+      box-shadow: 0 1px 3px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.3);
+      z-index: 4;
+    }
+    .bolt-tl { top: 8px; left: 8px; }
+    .bolt-tr { top: 8px; right: 8px; }
+    .bolt-bl { bottom: 8px; left: 8px; }
+    .bolt-br { bottom: 8px; right: 8px; }
+    /* legs */
+    .aframe-legs {
+      position: relative;
+      width: 90%;
+      height: 110px;
+      overflow: visible;
+    }
+    .leg {
+      position: absolute;
+      top: -6px;
+      width: 20px;
+      height: 130px;
+      border-radius: 4px;
+      background: linear-gradient(90deg,
+        #4A2E0F 0%, #7A4E20 30%, #A06830 50%,
+        #7A4E20 70%, #4A2E0F 100%);
+      box-shadow: 3px 4px 12px rgba(0,0,0,.65);
+    }
+    .leg-left  { left: 10%; transform-origin: top center; transform: rotate(-20deg); }
+    .leg-right { right: 10%; transform-origin: top center; transform: rotate(20deg); }
+    /* chain */
+    .aframe-chain {
+      position: absolute;
+      left: 13%;
+      right: 13%;
+      top: 72px;
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        #888 0px, #888 5px, #555 5px, #555 7px, #888 7px, #888 11px, transparent 11px, transparent 13px
+      );
+      opacity: 0.55;
+      border-radius: 2px;
+    }
+    /* ground shadow */
+    .aframe-shadow {
+      position: absolute;
+      bottom: -16px;
+      left: 0; right: 0;
+      height: 24px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,.55) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    @media (max-width: 480px) {
+      .aframe-wrap { max-width: 100%; }
+      .leg { height: 100px; }
+      .aframe-legs { height: 85px; }
+    }
   </style>
 
   <script type="application/ld+json">
@@ -857,85 +957,28 @@
   <!-- ============================================================
        MENU
   ============================================================ -->
-  <section id="menu" aria-labelledby="menu-heading">
-    <div class="section-inner">
+  <section id="menu" aria-labelledby="menu-heading" class="aframe-section" style="background:#1C0F05;">
+    <h2 id="menu-heading" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">The Menu</h2>
+    <div class="aframe-wrap reveal">
 
-      <div class="menu-intro">
-        <span class="section-eyebrow reveal">The lineup</span>
-        <h2 id="menu-heading" class="section-heading reveal d1">The Dogs</h2>
-        <p class="reveal d2">Four signatures. Each one crafted like it matters, because it does.</p>
+      <!-- wooden frame board -->
+      <div class="aframe-board">
+        <div class="bolt bolt-tl"></div>
+        <div class="bolt bolt-tr"></div>
+        <div class="bolt bolt-bl"></div>
+        <div class="bolt bolt-br"></div>
+        <img
+          src="menu-board.jpeg"
+          alt="LadyDawgs menu: All Beef Hot Dogs, Bratwurst, and Vegan Sausage with toppings including ketchup, mustard, spicy brown mustard, mayo, BBQ sauce, sriracha, relish, cheese, onions, pickles, jalapenos, sauerkraut, and red cabbage"
+        />
       </div>
 
-      <div class="menu-grid">
-
-        <!-- Card 1 -->
-        <article class="menu-card reveal d1">
-          <div class="card-top">
-            <div>
-              <span class="card-badge badge-classic">Classic</span>
-              <h3 class="card-name">The Boss Lady</h3>
-            </div>
-            <span class="price-tag">$7</span>
-          </div>
-          <p class="card-desc">All-beef frank, stadium mustard, grilled onions, sport peppers, celery salt. The classic, done exactly right.</p>
-          <div class="card-tags">
-            <span class="card-tag">All-Beef</span>
-            <span class="card-tag">Classic</span>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="menu-card reveal d2">
-          <div class="card-top">
-            <div>
-              <span class="card-badge badge-spicy">Spicy</span>
-              <h3 class="card-name">The Firecracker</h3>
-            </div>
-            <span class="price-tag">$8</span>
-          </div>
-          <p class="card-desc">Jalapeno cheddar sausage, sriracha mayo, pickled red onion, crispy shallots. Heat that respects you.</p>
-          <div class="card-tags">
-            <span class="card-tag">Spicy</span>
-            <span class="card-tag">Cheddar</span>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="menu-card reveal d3">
-          <div class="card-top">
-            <div>
-              <span class="card-badge badge-fanfave">Fan Fave</span>
-              <h3 class="card-name">The Sweet Talker</h3>
-            </div>
-            <span class="price-tag">$9</span>
-          </div>
-          <p class="card-desc">Smoked chicken sausage, mango relish, coconut crema, toasted coconut flakes. Unexpected. Perfect.</p>
-          <div class="card-tags">
-            <span class="card-tag">Chicken</span>
-            <span class="card-tag">Tropical</span>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="menu-card reveal d4">
-          <div class="card-top">
-            <div>
-              <span class="card-badge badge-plant">Plant-Based</span>
-              <h3 class="card-name">The Garden Party</h3>
-            </div>
-            <span class="price-tag">$8</span>
-          </div>
-          <p class="card-desc">Plant-based dog, roasted corn salsa, avocado crema, cotija cheese. For everyone at the table.</p>
-          <div class="card-tags">
-            <span class="card-tag">Plant-Based</span>
-            <span class="card-tag">Vegetarian</span>
-          </div>
-        </article>
-
-      </div>
-
-      <div class="menu-footer reveal">
-        <p>All served on a toasted brioche bun</p>
+      <!-- A-frame legs -->
+      <div class="aframe-legs">
+        <div class="leg leg-left"></div>
+        <div class="leg leg-right"></div>
+        <div class="aframe-chain"></div>
+        <div class="aframe-shadow"></div>
       </div>
 
     </div>
