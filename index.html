@@ -285,6 +285,7 @@
       .hero-sub { margin-top: .5rem; font-size: .95rem; }
       .hero-ctas { margin-top: .75rem; }
       .hero-note { margin-top: .5rem; }
+      .scroll-hint { display: none !important; }
     }
     .hero-label {
       font-family: 'Permanent Marker', cursive;
@@ -638,6 +639,21 @@
     }
     .schedule-place { font-weight: 700; color: var(--cream); margin-bottom: .2rem; }
     .schedule-time { font-size: .875rem; color: rgba(253,245,228,.45); line-height: 1.55; }
+    .schedule-link {
+      display: inline-block;
+      margin-top: .6rem;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--mustard);
+      border: 1px solid var(--mustard);
+      border-radius: 4px;
+      padding: .25rem .65rem;
+      text-decoration: none;
+      transition: background .2s ease, color .2s ease;
+    }
+    .schedule-link:hover { background: var(--mustard); color: var(--dark); }
 
     .findus-cta {
       margin-top: 4rem;
@@ -1066,27 +1082,31 @@
         <div class="schedule-item reveal d1">
           <p class="schedule-day">Fri, May 1</p>
           <p class="schedule-place">Fridays by the River</p>
-          <p class="schedule-time">Shelby Park, Nashville</p>
+          <p class="schedule-time">Shelby Park, Nashville, TN</p>
+          <a class="schedule-link" href="https://www.friendsofshelby.org/beer-garden" target="_blank" rel="noopener">Event Info</a>
         </div>
         <div class="schedule-item reveal d2">
           <p class="schedule-day">Fri, May 8</p>
           <p class="schedule-place">Fridays by the River</p>
-          <p class="schedule-time">Shelby Park, Nashville</p>
+          <p class="schedule-time">Shelby Park, Nashville, TN</p>
+          <a class="schedule-link" href="https://www.friendsofshelby.org/beer-garden" target="_blank" rel="noopener">Event Info</a>
         </div>
         <div class="schedule-item reveal d3">
           <p class="schedule-day">Sat, May 9</p>
           <p class="schedule-place">Private Birthday Catering</p>
-          <p class="schedule-time">Secret location</p>
+          <p class="schedule-time">Private event</p>
         </div>
         <div class="schedule-item reveal d1">
           <p class="schedule-day">Fri, May 15</p>
           <p class="schedule-place">Food Truck Night</p>
-          <p class="schedule-time">Springfield, TN</p>
+          <p class="schedule-time">Springfield, Robertson County, TN</p>
+          <a class="schedule-link" href="https://www.facebook.com/events/1492698869308636/?acontext=%7B%22event_action_history%22%3A[%7B%22surface%22%3A%22external_search_engine%22%7D%2C%7B%22mechanism%22%3A%22attachment%22%2C%22surface%22%3A%22newsfeed%22%7D]%2C%22ref_notif_type%22%3Anull%7D" target="_blank" rel="noopener">Event Info</a>
         </div>
         <div class="schedule-item reveal d2">
           <p class="schedule-day">Sat, May 16</p>
           <p class="schedule-place">Country Garden Greenhouse</p>
-          <p class="schedule-time">Vanleer, TN</p>
+          <p class="schedule-time">Vanleer, Houston County, TN</p>
+          <a class="schedule-link" href="https://www.facebook.com/countrygardenstn/" target="_blank" rel="noopener">Event Info</a>
         </div>
         <div class="schedule-item reveal d3">
           <p class="schedule-day">Always</p>
