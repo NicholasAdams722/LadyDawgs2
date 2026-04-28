@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LadyDawgs | Lady Owned and Operated Weenie Wagon</title>
+  <meta name="description" content="LadyDawgs: lady owned and operated weenie wagon. Find us at local events and markets around town.">
+  <meta property="og:title" content="LadyDawgs | Lady Owned and Operated Weenie Wagon">
+  <meta property="og:description" content="Lady owned and operated weenie wagon. Find us at a market near you.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://placehold.co/1200x630/1C0F05/E8B923?text=LadyDawgs">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LadyDawgs | Lady Owned and Operated Weenie Wagon">
+  <meta name="twitter:description" content="Lady owned and operated weenie wagon. Find us at a market near you.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mustard:  { DEFAULT: '#E8B923', dark: '#C9980F', light: '#F5CF60' },
+            crimson:  { DEFAULT: '#BF2A2A', dark: '#8B1A1A', light: '#D94040' },
+            cream:    { DEFAULT: '#FDF5E4', dark: '#EFE0C4' },
+            dawg: {
+              dark:   '#1C0F05',
+              mid:    '#2E1A0E',
+              brown:  '#5C3317',
+              tan:    '#C49A5E',
+            },
+          },
+          fontFamily: {
+            display: ['"Abril Fatface"', 'serif'],
+            body:    ['Nunito', 'sans-serif'],
+            marker:  ['"Permanent Marker"', 'cursive'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mustard:     #E8B923;
+      --mustard-dk:  #C9980F;
+      --crimson:     #BF2A2A;
+      --cream:       #FDF5E4;
+      --dark:        #1C0F05;
+      --mid:         #2E1A0E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--mustard); border-radius: 4px; }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    .font-display { font-family: 'Abril Fatface', serif; }
+    .font-marker  { font-family: 'Permanent Marker', cursive; }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(44px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0)   rotate(-4deg); }
+      50%       { transform: translateY(-28px) rotate(4deg); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .anim-1 { opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .08s  forwards; }
+    .anim-2 { opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .22s  forwards; }
+    .anim-3 { opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .38s  forwards; }
+    .anim-4 { opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .54s  forwards; }
+    .anim-5 { opacity: 0; animation: fadeUp .9s cubic-bezier(.16,1,.3,1) .70s  forwards; }
+
+    .floating { animation: float 5.5s ease-in-out infinite; }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
+    }
+    #nav.scrolled {
+      background: rgba(28,15,5,.93);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.6rem;
+      color: var(--mustard);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .nav-logo:focus-visible { outline: 2px solid var(--mustard); outline-offset: 4px; border-radius: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-link {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: .875rem;
+      color: rgba(253,245,228,.7);
+      text-decoration: none;
+      position: relative;
+      transition: color .2s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--mustard);
+      transition: width .3s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-link:hover { color: var(--mustard); }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid var(--mustard); outline-offset: 4px; border-radius: 2px; }
+
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .mobile-toggle { display: flex; }
+    }
+    @media (min-width: 768px) {
+      .mobile-toggle { display: none; }
+    }
+    .mobile-toggle {
+      background: none; border: none; cursor: pointer;
+      color: var(--cream); padding: .5rem;
+      border-radius: 4px;
+    }
+    .mobile-toggle:focus-visible { outline: 2px solid var(--mustard); outline-offset: 3px; }
+
+    #mobile-nav {
+      display: none;
+      flex-direction: column;
+      background: rgba(28,15,5,.97);
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding: 1.25rem 1.5rem 1.5rem;
+      gap: 1rem;
+    }
+    #mobile-nav.open { display: flex; }
+    .mobile-nav-link {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: rgba(253,245,228,.8);
+      text-decoration: none;
+      padding: .5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: .9375rem;
+      letter-spacing: -.01em;
+      color: var(--dark);
+      background: var(--mustard);
+      padding: .8125rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .2s ease, box-shadow .2s ease;
+      box-shadow: 0 4px 0 var(--mustard-dk), 0 6px 22px rgba(232,185,35,.28);
+    }
+    .btn-primary:hover {
+      background: #F5CF60;
+      transform: translateY(-3px);
+      box-shadow: 0 7px 0 var(--mustard-dk), 0 14px 32px rgba(232,185,35,.36);
+    }
+    .btn-primary:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--mustard-dk), 0 4px 10px rgba(232,185,35,.18);
+    }
+    .btn-primary:focus-visible { outline: 3px solid #F5CF60; outline-offset: 3px; }
+
+    .btn-ghost {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: .9375rem;
+      letter-spacing: -.01em;
+      color: var(--cream);
+      border: 2px solid rgba(253,245,228,.35);
+      padding: .75rem 1.875rem;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+    }
+    .btn-ghost:hover {
+      border-color: var(--cream);
+      background: rgba(253,245,228,.07);
+      transform: translateY(-3px);
+    }
+    .btn-ghost:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 68px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 65% 55% at 62% 38%, rgba(232,185,35,.07) 0%, transparent 68%),
+        radial-gradient(ellipse 45% 65% at 28% 65%, rgba(191,42,42,.055) 0%, transparent 60%),
+        var(--dark);
+    }
+    .hero-deco-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(232,185,35,.06);
+      pointer-events: none;
+    }
+    .hero-content {
+      max-width: 1200px; margin: 0 auto;
+      padding: 4rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      width: 100%;
+    }
+    @media (max-width: 767px) {
+      .hero-content { grid-template-columns: 1fr; padding: 3rem 1.5rem 4rem; }
+      .hero-visual { order: -1; }
+    }
+    .hero-label {
+      font-family: 'Permanent Marker', cursive;
+      font-size: .875rem;
+      color: var(--mustard);
+      letter-spacing: .06em;
+      display: block;
+      margin-bottom: .875rem;
+    }
+    .hero-h1 {
+      font-family: 'Abril Fatface', serif;
+      line-height: .88;
+      letter-spacing: -.02em;
+    }
+    .hero-h1 .line-lady { color: var(--mustard); }
+    .hero-h1 .line-dawgs { color: var(--crimson); }
+    .hero-sub {
+      font-size: 1.1875rem;
+      line-height: 1.68;
+      color: rgba(253,245,228,.65);
+      margin-top: 1.5rem;
+      max-width: 400px;
+    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .hero-note {
+      margin-top: 1.25rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: .9375rem;
+      color: rgba(253,245,228,.32);
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      color: rgba(253,245,228,.3);
+    }
+    .scroll-hint span {
+      font-size: .6875rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       MARQUEE STRIP
+    ============================================================ */
+    .marquee-strip {
+      background: var(--mustard);
+      padding: .6rem 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 26s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.0625rem;
+      color: var(--dark);
+      letter-spacing: -.01em;
+      white-space: nowrap;
+      padding: 0 2.5rem;
+    }
+
+    /* ============================================================
+       SECTION COMMON
+    ============================================================ */
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .section-eyebrow {
+      font-family: 'Permanent Marker', cursive;
+      font-size: .875rem;
+      letter-spacing: .06em;
+      display: block;
+      margin-bottom: .75rem;
+    }
+    .section-heading {
+      font-family: 'Abril Fatface', serif;
+      letter-spacing: -.025em;
+      line-height: .92;
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .08s; }
+    .d2 { transition-delay: .18s; }
+    .d3 { transition-delay: .28s; }
+    .d4 { transition-delay: .38s; }
+
+    /* ============================================================
+       MENU SECTION
+    ============================================================ */
+    #menu {
+      background: var(--cream);
+      padding: 7rem 0;
+    }
+    .menu-intro { text-align: center; margin-bottom: 4rem; }
+    .menu-intro .section-eyebrow { color: var(--crimson); }
+    .menu-intro .section-heading { color: var(--dark); font-size: clamp(3rem, 6vw, 5.5rem); }
+    .menu-intro p {
+      color: rgba(28,15,5,.55);
+      font-size: 1.0625rem;
+      line-height: 1.72;
+      max-width: 380px;
+      margin: .875rem auto 0;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 767px) { .menu-grid { grid-template-columns: 1fr; } }
+
+    .menu-card {
+      background: var(--dark);
+      border: 1.5px solid rgba(232,185,35,.15);
+      border-radius: 10px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,.55),
+        0 10px 28px rgba(0,0,0,.38),
+        0 24px 52px rgba(28,15,5,.28);
+      transition:
+        transform .35s cubic-bezier(.34,1.56,.64,1),
+        box-shadow .35s ease,
+        border-color .25s ease;
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.025) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .menu-card:hover {
+      transform: translateY(-9px) rotate(.4deg);
+      border-color: rgba(232,185,35,.35);
+      box-shadow:
+        0 4px 8px rgba(0,0,0,.6),
+        0 18px 44px rgba(0,0,0,.45),
+        0 36px 72px rgba(28,15,5,.3);
+    }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
+    .card-badge {
+      font-family: 'Permanent Marker', cursive;
+      font-size: .75rem;
+      padding: 2px 11px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: .5rem;
+      transform: rotate(-1.5deg);
+    }
+    .badge-classic  { background: var(--mustard); color: var(--dark); }
+    .badge-spicy    { background: var(--crimson); color: var(--cream); }
+    .badge-fanfave  { background: #4A7C3F; color: var(--cream); }
+    .badge-plant    { background: #4A7C3F; color: var(--cream); }
+
+    .card-name {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.875rem;
+      color: var(--cream);
+      letter-spacing: -.01em;
+      line-height: 1;
+    }
+    .price-tag {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.25rem;
+      background: var(--mustard);
+      color: var(--dark);
+      padding: 4px 13px;
+      border-radius: 3px;
+      transform: rotate(2deg);
+      display: inline-block;
+      box-shadow: 2px 3px 0 var(--mustard-dk);
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .card-desc {
+      color: rgba(253,245,228,.58);
+      line-height: 1.68;
+      font-size: .9375rem;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
+    .card-tag {
+      font-size: .75rem;
+      font-weight: 700;
+      background: rgba(255,255,255,.05);
+      color: rgba(253,245,228,.5);
+      padding: 3px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+
+    .menu-footer {
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .menu-footer p {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.125rem;
+      color: rgba(28,15,5,.45);
+    }
+
+    /* ============================================================
+       ABOUT SECTION
+    ============================================================ */
+    #about {
+      background: var(--dark);
+      padding: 7rem 0;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 767px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+    .about-bg-letter {
+      position: absolute;
+      top: -2rem; left: -1.5rem;
+      font-family: 'Abril Fatface', serif;
+      font-size: 220px;
+      color: rgba(255,255,255,.025);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .about-img-frame {
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      position: relative;
+    }
+    .about-img-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .about-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.58) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .about-img-tint {
+      position: absolute; inset: 0;
+      background: rgba(191,42,42,.09);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    .about-img-caption {
+      position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.5rem;
+      color: var(--mustard);
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -1.25rem; right: -1.25rem;
+      width: 6rem; height: 6rem;
+      background: var(--mustard);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      font-family: 'Abril Fatface', serif;
+      font-size: .8125rem;
+      line-height: 1.2;
+      color: var(--dark);
+      transform: rotate(13deg);
+      box-shadow: 0 4px 18px rgba(232,185,35,.35);
+    }
+
+    .about-text .section-eyebrow { color: var(--mustard); }
+    .about-text .section-heading {
+      color: var(--cream);
+      font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+      margin-bottom: 1.75rem;
+    }
+    .about-body { color: rgba(253,245,228,.6); line-height: 1.75; }
+    .about-body p + p { margin-top: 1rem; }
+
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .stat-num {
+      font-family: 'Abril Fatface', serif;
+      font-size: 2.5rem;
+      color: var(--mustard);
+      line-height: 1;
+    }
+    .stat-label { color: rgba(253,245,228,.45); font-size: .8125rem; margin-top: .3rem; }
+
+    /* ============================================================
+       FIND US / SCHEDULE
+    ============================================================ */
+    #find-us {
+      background: var(--mid);
+      padding: 7rem 0;
+    }
+    .findus-intro { text-align: center; margin-bottom: 4rem; }
+    .findus-intro .section-eyebrow { color: var(--mustard); }
+    .findus-intro .section-heading {
+      color: var(--cream);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+    }
+    .findus-intro p {
+      color: rgba(253,245,228,.45);
+      font-size: 1.0625rem;
+      margin-top: .75rem;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 2.5rem;
+    }
+    @media (max-width: 900px) { .schedule-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .schedule-grid { grid-template-columns: 1fr; } }
+
+    .schedule-item {
+      border-left: 3px solid var(--mustard);
+      padding-left: 1.25rem;
+    }
+    .schedule-day {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.25rem;
+      color: var(--mustard);
+      margin-bottom: .25rem;
+    }
+    .schedule-place { font-weight: 700; color: var(--cream); margin-bottom: .2rem; }
+    .schedule-time { font-size: .875rem; color: rgba(253,245,228,.45); line-height: 1.55; }
+
+    .findus-cta {
+      margin-top: 4rem;
+      background: rgba(232,185,35,.08);
+      border: 1px solid rgba(232,185,35,.18);
+      border-radius: 10px;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .findus-cta-heading {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.625rem;
+      color: var(--mustard);
+      margin-bottom: .75rem;
+    }
+    .findus-cta p {
+      color: rgba(253,245,228,.55);
+      max-width: 400px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,.05);
+      padding: 3rem 0 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .footer-logo {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.75rem;
+      color: var(--mustard);
+      text-decoration: none;
+    }
+    .footer-tagline {
+      font-family: 'Permanent Marker', cursive;
+      font-size: .875rem;
+      color: rgba(253,245,228,.28);
+      margin-top: .25rem;
+    }
+    .footer-nav { display: flex; flex-wrap: wrap; gap: 1.25rem 2rem; }
+    .footer-nav a {
+      font-size: .875rem;
+      font-weight: 700;
+      color: rgba(253,245,228,.45);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    .footer-nav a:hover { color: var(--mustard); }
+    .footer-nav a:focus-visible { outline: 2px solid var(--mustard); outline-offset: 3px; border-radius: 2px; }
+    .footer-socials { display: flex; gap: 1rem; }
+    .social-link {
+      color: rgba(253,245,228,.4);
+      text-decoration: none;
+      transition: color .2s ease;
+      display: flex; align-items: center;
+    }
+    .social-link:hover { color: var(--mustard); }
+    .social-link:focus-visible { outline: 2px solid var(--mustard); outline-offset: 3px; border-radius: 3px; }
+    .footer-copy {
+      text-align: center;
+      color: rgba(253,245,228,.22);
+      font-size: .75rem;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.04);
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    "name": "LadyDawgs",
+    "description": "Lady owned and operated weenie wagon serving boldly crafted hot dogs at local events and markets.",
+    "servesCuisine": "American",
+    "priceRange": "$",
+    "url": "https://ladydawgs.com",
+    "sameAs": ["https://www.instagram.com/la_ladydawgs/"],
+    "hasMenu": {
+      "@type": "Menu",
+      "hasMenuSection": {
+        "@type": "MenuSection",
+        "name": "Signature Dogs",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "The Boss Lady", "description": "All-beef frank, stadium mustard, grilled onions, sport peppers, celery salt", "offers": { "@type": "Offer", "price": "7.00", "priceCurrency": "USD" } },
+          { "@type": "MenuItem", "name": "The Firecracker", "description": "Jalapeno cheddar sausage, sriracha mayo, pickled red onion, crispy shallots", "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "USD" } },
+          { "@type": "MenuItem", "name": "The Sweet Talker", "description": "Smoked chicken sausage, mango relish, coconut crema, toasted coconut", "offers": { "@type": "Offer", "price": "9.00", "priceCurrency": "USD" } },
+          { "@type": "MenuItem", "name": "The Garden Party", "description": "Plant-based dog, roasted corn salsa, avocado crema, cotija cheese", "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "USD" } }
+        ]
+      }
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav id="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">LadyDawgs</a>
+      <div class="nav-links">
+        <a href="#menu"    class="nav-link">The Menu</a>
+        <a href="#about"   class="nav-link">Our Story</a>
+        <a href="#find-us" class="nav-link">Find Us</a>
+        <a href="merch.html" class="nav-link">Merch</a>
+        <a href="#find-us" class="btn-primary" style="padding:.625rem 1.375rem; font-size:.875rem;">Order Now</a>
+      </div>
+      <button class="mobile-toggle" id="mobile-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg id="icon-open" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.25" viewBox="0 0 24 24" stroke-linecap="round">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="icon-close" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.25" viewBox="0 0 24 24" stroke-linecap="round" style="display:none;">
+          <line x1="4" y1="4" x2="20" y2="20"/>
+          <line x1="20" y1="4" x2="4"  y2="20"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+      <a href="#menu"      class="mobile-nav-link">The Menu</a>
+      <a href="#about"     class="mobile-nav-link">Our Story</a>
+      <a href="#find-us"   class="mobile-nav-link">Find Us</a>
+      <a href="merch.html" class="mobile-nav-link">Merch</a>
+      <a href="#find-us" class="btn-primary" style="margin-top:.5rem; text-align:center;">Order Now</a>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <header id="hero">
+    <!-- Decorative rings -->
+    <div class="hero-deco-ring" aria-hidden="true" style="width:700px;height:700px; top:50%;right:5%; transform:translate(0,-50%);"></div>
+    <div class="hero-deco-ring" aria-hidden="true" style="width:480px;height:480px; top:50%;right:12%; transform:translate(0,-50%);"></div>
+
+    <div class="hero-content">
+      <!-- Copy -->
+      <div class="hero-copy">
+        <span class="hero-label anim-1">Est. right now</span>
+        <h1 class="hero-h1">
+          <span class="line-lady anim-2" style="display:block; font-size:clamp(90px,13vw,168px);">LADY</span>
+          <span class="line-dawgs anim-3" style="display:block; font-size:clamp(90px,13vw,168px);">DAWGS</span>
+        </h1>
+        <p class="hero-sub anim-3">Lady owned and operated <span style="color:var(--mustard);font-weight:800;letter-spacing:-.01em;">WEENIE WAGON.</span> Bold flavors, real ingredients, zero pretension.</p>
+        <div class="hero-ctas anim-4">
+          <a href="#menu"    class="btn-primary">See the Menu</a>
+          <a href="#find-us" class="btn-ghost">Find Our Cart</a>
+        </div>
+        <p class="hero-note anim-5">No apologies. Just dogs.</p>
+      </div>
+
+      <!-- Logo -->
+      <div class="hero-visual floating" aria-hidden="true">
+        <img
+          src="Lady_Dawgs_ColorVector.svg"
+          alt="LadyDawgs logo"
+          style="width:100%;max-width:480px;filter:drop-shadow(0 32px 48px rgba(0,0,0,.55));"
+        />
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint anim-5" aria-hidden="true">
+      <span>Scroll</span>
+      <svg width="14" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" viewBox="0 0 14 22">
+        <path d="M7 3v16M1 13l6 6 6-6"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MARQUEE
+  ============================================================ -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">LADY DAWGS</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">WEENIE WAGON</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">LADY OWNED</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">HOT DOGS</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">ALL BEEF</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">REAL FLAVOR</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">LADY DAWGS</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">WEENIE WAGON</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">LADY OWNED</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">HOT DOGS</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">ALL BEEF</span><span class="marquee-item">&#10022;</span>
+      <span class="marquee-item">REAL FLAVOR</span><span class="marquee-item">&#10022;</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MENU
+  ============================================================ -->
+  <section id="menu" aria-labelledby="menu-heading">
+    <div class="section-inner">
+
+      <div class="menu-intro">
+        <span class="section-eyebrow reveal">The lineup</span>
+        <h2 id="menu-heading" class="section-heading reveal d1">The Dogs</h2>
+        <p class="reveal d2">Four signatures. Each one crafted like it matters, because it does.</p>
+      </div>
+
+      <div class="menu-grid">
+
+        <!-- Card 1 -->
+        <article class="menu-card reveal d1">
+          <div class="card-top">
+            <div>
+              <span class="card-badge badge-classic">Classic</span>
+              <h3 class="card-name">The Boss Lady</h3>
+            </div>
+            <span class="price-tag">$7</span>
+          </div>
+          <p class="card-desc">All-beef frank, stadium mustard, grilled onions, sport peppers, celery salt. The classic, done exactly right.</p>
+          <div class="card-tags">
+            <span class="card-tag">All-Beef</span>
+            <span class="card-tag">Classic</span>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="menu-card reveal d2">
+          <div class="card-top">
+            <div>
+              <span class="card-badge badge-spicy">Spicy</span>
+              <h3 class="card-name">The Firecracker</h3>
+            </div>
+            <span class="price-tag">$8</span>
+          </div>
+          <p class="card-desc">Jalapeno cheddar sausage, sriracha mayo, pickled red onion, crispy shallots. Heat that respects you.</p>
+          <div class="card-tags">
+            <span class="card-tag">Spicy</span>
+            <span class="card-tag">Cheddar</span>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="menu-card reveal d3">
+          <div class="card-top">
+            <div>
+              <span class="card-badge badge-fanfave">Fan Fave</span>
+              <h3 class="card-name">The Sweet Talker</h3>
+            </div>
+            <span class="price-tag">$9</span>
+          </div>
+          <p class="card-desc">Smoked chicken sausage, mango relish, coconut crema, toasted coconut flakes. Unexpected. Perfect.</p>
+          <div class="card-tags">
+            <span class="card-tag">Chicken</span>
+            <span class="card-tag">Tropical</span>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="menu-card reveal d4">
+          <div class="card-top">
+            <div>
+              <span class="card-badge badge-plant">Plant-Based</span>
+              <h3 class="card-name">The Garden Party</h3>
+            </div>
+            <span class="price-tag">$8</span>
+          </div>
+          <p class="card-desc">Plant-based dog, roasted corn salsa, avocado crema, cotija cheese. For everyone at the table.</p>
+          <div class="card-tags">
+            <span class="card-tag">Plant-Based</span>
+            <span class="card-tag">Vegetarian</span>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="menu-footer reveal">
+        <p>All served on a toasted brioche bun</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="section-inner">
+      <div class="about-grid">
+
+        <!-- Visual -->
+        <div class="about-image-wrap reveal">
+          <span class="about-bg-letter" aria-hidden="true">L</span>
+          <div class="about-img-frame">
+            <img
+              src="https://placehold.co/600x750/3D2010/C17D50?text=LadyDawgs"
+              alt="Diane behind the LadyDawgs cart at a local farmers market"
+              loading="lazy"
+            />
+            <div class="about-img-overlay"></div>
+            <div class="about-img-tint"></div>
+            <p class="about-img-caption">One cart. One mission.</p>
+          </div>
+          <div class="about-badge" aria-hidden="true">100%<br>Local</div>
+        </div>
+
+        <!-- Copy -->
+        <div class="about-text">
+          <span class="section-eyebrow reveal">Our story</span>
+          <h2 id="about-heading" class="section-heading reveal d1">Started with a cart and a craving.</h2>
+          <div class="about-body reveal d2">
+            <p>
+              LadyDawgs was born on a summer Saturday when the founder, Diane, showed up to a local market with a beat-up cart, a cooler full of the best dogs in town, and absolutely no plan to fail.
+            </p>
+            <p>
+              Three years later, that same cart shows up at farmers markets, festivals, and block parties across the city. The dogs got better. The lines got longer. The attitude stayed the same.
+            </p>
+            <p>
+              Every dog is loaded with house-made toppings, sourced from local vendors when possible, and assembled with the care of someone who genuinely gives a damn.
+            </p>
+          </div>
+
+          <div class="about-stats reveal d3">
+            <div>
+              <p class="stat-num">3+</p>
+              <p class="stat-label">Years rolling</p>
+            </div>
+            <div>
+              <p class="stat-num">4</p>
+              <p class="stat-label">Signature dogs</p>
+            </div>
+            <div>
+              <p class="stat-num">0</p>
+              <p class="stat-label">Apologies given</p>
+            </div>
+          </div>
+
+          <div style="margin-top:2rem;" class="reveal d4">
+            <a href="#find-us" class="btn-primary">Come Find Us</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FIND US
+  ============================================================ -->
+  <section id="find-us" aria-labelledby="findus-heading">
+    <div class="section-inner">
+
+      <div class="findus-intro">
+        <span class="section-eyebrow reveal">We get around</span>
+        <h2 id="findus-heading" class="section-heading reveal d1">Find our cart</h2>
+        <p class="reveal d2">We're out there. Come say hi.</p>
+      </div>
+
+      <div class="schedule-grid">
+        <div class="schedule-item reveal d1">
+          <p class="schedule-day">Saturday</p>
+          <p class="schedule-place">Downtown Farmers Market</p>
+          <p class="schedule-time">8 am to 2 pm, rain or shine</p>
+        </div>
+        <div class="schedule-item reveal d2">
+          <p class="schedule-day">Sunday</p>
+          <p class="schedule-place">Riverside Park Events</p>
+          <p class="schedule-time">10 am to 4 pm, when events are scheduled</p>
+        </div>
+        <div class="schedule-item reveal d3">
+          <p class="schedule-day">Thursday</p>
+          <p class="schedule-place">Food Truck Thursday</p>
+          <p class="schedule-time">11 am to 7 pm, Millbrook District</p>
+        </div>
+        <div class="schedule-item reveal d1">
+          <p class="schedule-day">Friday</p>
+          <p class="schedule-place">Midtown Street Corner</p>
+          <p class="schedule-time">11:30 am to 2 pm, 5th and Main</p>
+        </div>
+        <div class="schedule-item reveal d2">
+          <p class="schedule-day">Anytime</p>
+          <p class="schedule-place">Private Catering</p>
+          <p class="schedule-time">Parties, weddings, office events. Book us.</p>
+        </div>
+        <div class="schedule-item reveal d3">
+          <p class="schedule-day">Always</p>
+          <p class="schedule-place">Follow @la_ladydawgs</p>
+          <p class="schedule-time">Daily location updates on Instagram</p>
+        </div>
+      </div>
+
+      <div class="findus-cta reveal">
+        <p class="findus-cta-heading">Want us at your event?</p>
+        <p>We bring the cart, the dogs, and the good vibes. You supply the crowd. Let's talk.</p>
+        <a href="mailto:hello@ladydawgs.com" class="btn-primary">Get in Touch</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INSTAGRAM FEED
+  ============================================================ -->
+  <section id="instagram" aria-labelledby="ig-heading" style="background:var(--dark); padding:5rem 0;">
+
+    <style>
+      .ig-header {
+        display: flex; align-items: center; justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      .ig-handle-link {
+        display: inline-flex; align-items: center; gap: .6rem;
+        font-family: 'Abril Fatface', serif;
+        font-size: 1.75rem;
+        color: var(--mustard);
+        text-decoration: none;
+        letter-spacing: -.01em;
+        transition: color .2s ease;
+      }
+      .ig-handle-link:hover { color: #F5CF60; }
+      .ig-handle-link:focus-visible { outline: 2px solid var(--mustard); outline-offset: 4px; border-radius: 3px; }
+      .ig-eyebrow {
+        font-family: 'Permanent Marker', cursive;
+        font-size: .875rem;
+        color: rgba(253,245,228,.4);
+        letter-spacing: .06em;
+        margin-bottom: .6rem;
+      }
+      .ig-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 3px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 0;
+      }
+      @media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 480px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
+
+      .ig-cell {
+        aspect-ratio: 1;
+        position: relative;
+        overflow: hidden;
+        display: block;
+        background: var(--mid);
+      }
+      .ig-cell img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .4s cubic-bezier(.16,1,.3,1);
+      }
+      .ig-cell-overlay {
+        position: absolute; inset: 0;
+        background: rgba(28,15,5,.72);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0;
+        transition: opacity .3s ease;
+      }
+      .ig-cell:hover img { transform: scale(1.06); }
+      .ig-cell:hover .ig-cell-overlay { opacity: 1; }
+      .ig-cell:focus-visible { outline: 3px solid var(--mustard); outline-offset: -3px; }
+      .ig-cell-icon { color: var(--mustard); }
+
+      .ig-cta {
+        text-align: center;
+        margin-top: 2.5rem;
+        padding: 0 1.5rem;
+      }
+      .ig-follow-btn {
+        display: inline-flex; align-items: center; gap: .6rem;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        font-size: .9375rem;
+        color: var(--cream);
+        border: 2px solid rgba(253,245,228,.25);
+        padding: .75rem 1.875rem;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+      }
+      .ig-follow-btn:hover {
+        border-color: var(--mustard);
+        color: var(--mustard);
+        transform: translateY(-3px);
+      }
+      .ig-follow-btn:focus-visible { outline: 2px solid var(--mustard); outline-offset: 3px; }
+    </style>
+
+    <div class="ig-header reveal">
+      <p class="ig-eyebrow">Follow along</p>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" id="ig-heading" class="ig-handle-link" aria-label="Follow LadyDawgs on Instagram @la_ladydawgs">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        @la_ladydawgs
+      </a>
+    </div>
+
+    <div class="ig-grid reveal d1">
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/2E1A0E/E8B923?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/3D1A08/BF2A2A?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/1C0F05/C49A5E?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/2E1A0E/F5CF60?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/3D1A08/E8B923?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
+        <img src="https://placehold.co/400x400/1C0F05/D94040?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
+        <div class="ig-cell-overlay">
+          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="ig-cta reveal d2">
+      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-follow-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Follow on Instagram
+      </a>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <div>
+        <a href="#" class="footer-logo">LadyDawgs</a>
+        <p class="footer-tagline">Lady owned and operated weenie wagon.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#menu">Menu</a>
+        <a href="#about">Our Story</a>
+        <a href="#find-us">Find Us</a>
+        <a href="merch.html">Merch</a>
+        <a href="mailto:hello@ladydawgs.com">Contact</a>
+      </nav>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram (@la_ladydawgs)">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link" aria-label="TikTok">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.77a8.19 8.19 0 0 0 4.78 1.52V6.84a4.85 4.85 0 0 1-1.01-.15z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Facebook">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>2024 LadyDawgs. All rights reserved. Made with mustard.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 36);
+    }, { passive: true });
+
+    // Mobile menu
+    const btn       = document.getElementById('mobile-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const iconOpen  = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    btn.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+      iconOpen.style.display  = open ? 'none'  : '';
+      iconClose.style.display = open ? ''      : 'none';
+    });
+    mobileNav.addEventListener('click', e => {
+      if (e.target.tagName === 'A') {
+        mobileNav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        iconOpen.style.display  = '';
+        iconClose.style.display = 'none';
+      }
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
