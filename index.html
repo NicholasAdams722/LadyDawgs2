@@ -1125,97 +1125,68 @@
   </section>
 
   <!-- ============================================================
-       INSTAGRAM FEED
+       INSTAGRAM CTA
   ============================================================ -->
   <section id="instagram" aria-labelledby="ig-heading" style="background:var(--dark); padding:5rem 0;">
 
     <style>
-      .ig-header {
-        display: flex; align-items: center; justify-content: center;
-        flex-direction: column;
+      .ig-cta-wrap {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
         text-align: center;
-        margin-bottom: 2.5rem;
       }
-      .ig-handle-link {
-        display: inline-flex; align-items: center; gap: .6rem;
-        font-family: 'Abril Fatface', serif;
-        font-size: 1.75rem;
-        color: var(--mustard);
-        text-decoration: none;
-        letter-spacing: -.01em;
-        transition: color .2s ease;
-      }
-      .ig-handle-link:hover { color: #F5CF60; }
-      .ig-handle-link:focus-visible { outline: 2px solid var(--mustard); outline-offset: 4px; border-radius: 3px; }
       .ig-eyebrow {
         font-family: 'Permanent Marker', cursive;
         font-size: .875rem;
         color: rgba(253,245,228,.4);
         letter-spacing: .06em;
-        margin-bottom: .6rem;
+        margin-bottom: .75rem;
       }
-      .ig-grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 3px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 0;
+      .ig-handle-link {
+        display: inline-flex; align-items: center; gap: .6rem;
+        font-family: 'Abril Fatface', serif;
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        color: var(--mustard);
+        text-decoration: none;
+        letter-spacing: -.01em;
+        transition: color .2s ease;
+        margin-bottom: 1.25rem;
       }
-      @media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
-      @media (max-width: 480px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
-
-      .ig-cell {
-        aspect-ratio: 1;
-        position: relative;
-        overflow: hidden;
-        display: block;
-        background: var(--mid);
-      }
-      .ig-cell img {
-        width: 100%; height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform .4s cubic-bezier(.16,1,.3,1);
-      }
-      .ig-cell-overlay {
-        position: absolute; inset: 0;
-        background: rgba(28,15,5,.72);
-        display: flex; align-items: center; justify-content: center;
-        opacity: 0;
-        transition: opacity .3s ease;
-      }
-      .ig-cell:hover img { transform: scale(1.06); }
-      .ig-cell:hover .ig-cell-overlay { opacity: 1; }
-      .ig-cell:focus-visible { outline: 3px solid var(--mustard); outline-offset: -3px; }
-      .ig-cell-icon { color: var(--mustard); }
-
-      .ig-cta {
-        text-align: center;
-        margin-top: 2.5rem;
-        padding: 0 1.5rem;
+      .ig-handle-link:hover { color: #F5CF60; }
+      .ig-handle-link:focus-visible { outline: 2px solid var(--mustard); outline-offset: 4px; border-radius: 3px; }
+      .ig-blurb {
+        color: rgba(253,245,228,.55);
+        font-size: 1.0625rem;
+        line-height: 1.7;
+        margin-bottom: 1.75rem;
       }
       .ig-follow-btn {
         display: inline-flex; align-items: center; gap: .6rem;
         font-family: 'Nunito', sans-serif;
         font-weight: 800;
         font-size: .9375rem;
-        color: var(--cream);
-        border: 2px solid rgba(253,245,228,.25);
-        padding: .75rem 1.875rem;
+        color: var(--dark);
+        background: var(--mustard);
+        padding: .8125rem 2rem;
         border-radius: 5px;
         text-decoration: none;
-        transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+        box-shadow: 0 4px 0 var(--mustard-dk), 0 6px 22px rgba(232,185,35,.28);
+        transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .2s ease, box-shadow .2s ease;
       }
       .ig-follow-btn:hover {
-        border-color: var(--mustard);
-        color: var(--mustard);
+        background: #F5CF60;
         transform: translateY(-3px);
+        box-shadow: 0 7px 0 var(--mustard-dk), 0 14px 32px rgba(232,185,35,.36);
       }
-      .ig-follow-btn:focus-visible { outline: 2px solid var(--mustard); outline-offset: 3px; }
+      .ig-follow-btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 var(--mustard-dk), 0 4px 10px rgba(232,185,35,.18);
+      }
+      .ig-follow-btn:focus-visible { outline: 3px solid #F5CF60; outline-offset: 3px; }
     </style>
 
-    <div class="ig-header reveal">
+    <div class="ig-cta-wrap reveal">
       <p class="ig-eyebrow">Follow along</p>
       <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" id="ig-heading" class="ig-handle-link" aria-label="Follow LadyDawgs on Instagram @la_ladydawgs">
         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
@@ -1225,50 +1196,9 @@
         </svg>
         @la_ladydawgs
       </a>
-    </div>
-
-    <div class="ig-grid reveal d1">
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/2E1A0E/E8B923?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/3D1A08/BF2A2A?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/1C0F05/C49A5E?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/2E1A0E/F5CF60?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/3D1A08/E8B923?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-      <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-cell" aria-label="LadyDawgs Instagram post">
-        <img src="https://placehold.co/400x400/1C0F05/D94040?text=+" alt="LadyDawgs on Instagram" loading="lazy"/>
-        <div class="ig-cell-overlay">
-          <svg class="ig-cell-icon" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </div>
-      </a>
-    </div>
-
-    <div class="ig-cta reveal d2">
+      <p class="ig-blurb">Daily location updates, new dogs, and behind the cart. Tap in.</p>
       <a href="https://www.instagram.com/la_ladydawgs/" target="_blank" rel="noopener noreferrer" class="ig-follow-btn">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
           <rect x="2" y="2" width="20" height="20" rx="5"/>
           <circle cx="12" cy="12" r="4"/>
           <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
