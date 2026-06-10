@@ -119,6 +119,33 @@
       transform-origin: 50% -75%;
     }
 
+    /* Logo wrapper + corner dot cover-ups (hides two stray light dots in the SVG corners) */
+    .logo-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 480px;
+      width: 100%;
+      line-height: 0;
+    }
+    .logo-wrap img { display: block; width: 100%; }
+    .logo-wrap::before,
+    .logo-wrap::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #2a1408 0%, #2a1408 55%, rgba(42,20,8,0) 90%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .logo-wrap::after  { top: 64%; left: 4%; }   /* left stray sparkle outside hot dog */
+    .logo-wrap::before { top: 64%; right: 4%; }  /* right stray sparkle outside hot dog */
+    @media (max-width: 767px) {
+      .logo-wrap { max-width: 200px; }
+      .logo-wrap::before,
+      .logo-wrap::after { width: 18px; height: 18px; }
+    }
+
     /* ============================================================
        NAV
     ============================================================ */
@@ -935,11 +962,13 @@
 
       <!-- Logo -->
       <div class="hero-visual floating" aria-hidden="true">
-        <img
-          src="Lady_Dawgs_ColorVector.svg"
-          alt="LadyDawgs logo"
-          style="width:100%;max-width:480px;filter:drop-shadow(0 32px 48px rgba(0,0,0,.55));"
-        />
+        <span class="logo-wrap">
+          <img
+            src="Lady_Dawgs_ColorVector.svg"
+            alt="LadyDawgs logo"
+            style="width:100%;max-width:480px;filter:drop-shadow(0 32px 48px rgba(0,0,0,.55));"
+          />
+        </span>
       </div>
     </div>
 
