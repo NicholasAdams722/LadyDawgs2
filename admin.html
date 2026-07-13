@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Schedule admin | LadyDawgs</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mustard:    #E8B923;
+      --mustard-dk: #C9980F;
+      --mustard-lt: #F5CF60;
+      --crimson:    #BF2A2A;
+      --crimson-dk: #8B1A1A;
+      --cream:      #FDF5E4;
+      --dark:       #1C0F05;
+      --mid:        #2E1A0E;
+      --line:       rgba(232,185,35,.18);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background:
+        radial-gradient(1100px 600px at 12% -8%, rgba(232,185,35,.10), transparent 60%),
+        radial-gradient(900px 700px at 108% 110%, rgba(191,42,42,.12), transparent 55%),
+        var(--dark);
+      color: var(--cream);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+    header.page { margin-bottom: 2rem; }
+    .eyebrow {
+      font-family: 'Permanent Marker', cursive;
+      color: var(--mustard);
+      letter-spacing: .04em;
+      font-size: .9rem;
+      margin-bottom: .35rem;
+    }
+    h1 {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      letter-spacing: -.02em;
+      line-height: 1.05;
+    }
+    .sub { color: rgba(253,245,228,.6); margin-top: .5rem; font-size: 1rem; }
+    .sub a { color: var(--mustard); text-decoration: none; }
+    .sub a:hover { text-decoration: underline; }
+
+    /* Password bar */
+    .pw-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(28,15,5,.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 2px 0 rgba(0,0,0,.35), 0 14px 34px rgba(0,0,0,.35);
+    }
+    .pw-bar label { display: block; font-weight: 800; font-size: .85rem; letter-spacing: .02em; margin-bottom: .4rem; }
+    .pw-bar .hint { color: rgba(253,245,228,.5); font-weight: 400; font-size: .8rem; }
+
+    label { color: var(--cream); }
+    input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      color: var(--cream);
+      background: var(--mid);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: .65rem .8rem;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    textarea { resize: vertical; min-height: 2.6rem; line-height: 1.5; }
+    input::placeholder, textarea::placeholder { color: rgba(253,245,228,.32); }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--mustard);
+      box-shadow: 0 0 0 3px rgba(232,185,35,.22);
+    }
+
+    /* Cards */
+    .section-title {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.4rem;
+      color: var(--mustard);
+      margin: 2.25rem 0 1rem;
+      letter-spacing: -.01em;
+    }
+    .card {
+      background: rgba(46,26,14,.55);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--mustard);
+      border-radius: 10px;
+      padding: 1.25rem 1.25rem 1.1rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 1px 0 rgba(0,0,0,.25), 0 10px 26px rgba(0,0,0,.22);
+    }
+    .card.new { border-left-color: var(--crimson); }
+
+    .field { margin-bottom: .85rem; }
+    .field:last-of-type { margin-bottom: 1rem; }
+    .field > label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: rgba(253,245,228,.62);
+      margin-bottom: .35rem;
+    }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
+    @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+
+    .check {
+      display: flex; align-items: flex-start; gap: .6rem;
+      background: rgba(28,15,5,.5);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: .7rem .8rem;
+      cursor: pointer;
+    }
+    .check input { width: 1.1rem; height: 1.1rem; margin-top: .15rem; accent-color: var(--mustard); flex: none; }
+    .check .txt { font-size: .9rem; }
+    .check .txt small { display: block; color: rgba(253,245,228,.5); font-weight: 400; }
+
+    .card-actions {
+      display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+      margin-top: 1rem; padding-top: .9rem; border-top: 1px dashed var(--line);
+    }
+    .spacer { flex: 1 1 auto; }
+
+    /* Buttons */
+    button {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: .9rem;
+      border: none;
+      border-radius: 7px;
+      padding: .6rem 1.1rem;
+      cursor: pointer;
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .18s ease, box-shadow .18s ease, color .18s ease, opacity .18s ease;
+    }
+    button:focus-visible { outline: 3px solid var(--mustard-lt); outline-offset: 2px; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--mustard); color: var(--dark); box-shadow: 0 3px 0 var(--mustard-dk); }
+    .btn-primary:hover:not(:disabled) { background: var(--mustard-lt); transform: translateY(-2px); box-shadow: 0 5px 0 var(--mustard-dk); }
+    .btn-primary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--mustard-dk); }
+
+    .btn-danger { background: transparent; color: var(--crimson); border: 1px solid var(--crimson-dk); }
+    .btn-danger:hover:not(:disabled) { background: var(--crimson); color: var(--cream); }
+
+    .btn-ghost { background: transparent; color: var(--cream); border: 1px solid var(--line); }
+    .btn-ghost:hover:not(:disabled) { border-color: var(--mustard); color: var(--mustard); }
+
+    .btn-move {
+      background: var(--mid); color: var(--cream); border: 1px solid var(--line);
+      padding: .5rem .7rem; font-size: 1rem; line-height: 1; min-width: 2.4rem;
+    }
+    .btn-move:hover:not(:disabled) { border-color: var(--mustard); color: var(--mustard); }
+
+    .card-title-row { display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+    .card-index {
+      font-family: 'Abril Fatface', serif; color: var(--mustard);
+      font-size: 1.05rem; background: rgba(232,185,35,.1);
+      border-radius: 6px; padding: .1rem .6rem; flex: none;
+    }
+    .card-preview { color: rgba(253,245,228,.55); font-size: .9rem; }
+
+    /* Status toast */
+    #status {
+      position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%) translateY(140%);
+      background: var(--mid); color: var(--cream);
+      border: 1px solid var(--line); border-left: 4px solid var(--mustard);
+      border-radius: 9px; padding: .8rem 1.2rem; font-weight: 700; font-size: .95rem;
+      box-shadow: 0 12px 34px rgba(0,0,0,.45); z-index: 50;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1); max-width: 90vw;
+    }
+    #status.show { transform: translateX(-50%) translateY(0); }
+    #status.err { border-left-color: var(--crimson); }
+
+    .empty { color: rgba(253,245,228,.5); padding: 1.5rem 0; font-style: italic; }
+    .loading { color: rgba(253,245,228,.5); padding: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="page">
+      <p class="eyebrow">LadyDawgs</p>
+      <h1>Schedule admin</h1>
+      <p class="sub">Update the "Find our cart" schedule. Changes go live on <a href="/" target="_blank" rel="noopener">the website</a> right away.</p>
+    </header>
+
+    <div class="pw-bar">
+      <label for="pw">Owner password <span class="hint">(needed to save any change)</span></label>
+      <input type="password" id="pw" placeholder="Enter your password" autocomplete="current-password">
+    </div>
+
+    <h2 class="section-title">Current schedule</h2>
+    <div id="list"><p class="loading">Loading schedule…</p></div>
+
+    <h2 class="section-title">Add a new event</h2>
+    <div id="new-card"></div>
+
+  </div>
+
+  <div id="status" role="status" aria-live="polite"></div>
+
+  <script>
+    // ------------------------------------------------------------
+    // Small helpers
+    // ------------------------------------------------------------
+    const $ = sel => document.querySelector(sel);
+    const listEl = $('#list');
+    const newCardEl = $('#new-card');
+    const pwEl = $('#pw');
+    const statusEl = $('#status');
+
+    let state = [];           // saved events from the server
+    let statusTimer = null;
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
+    }
+
+    function toast(msg, isError) {
+      statusEl.textContent = msg;
+      statusEl.classList.toggle('err', !!isError);
+      statusEl.classList.add('show');
+      if (statusTimer) clearTimeout(statusTimer);
+      statusTimer = setTimeout(() => statusEl.classList.remove('show'), 3200);
+    }
+
+    function requirePassword() {
+      const pw = pwEl.value.trim();
+      if (!pw) {
+        toast('Enter the owner password first.', true);
+        pwEl.focus();
+        return null;
+      }
+      return pw;
+    }
+
+    // POST a write action to the API with the password.
+    async function write(action, payload) {
+      const pw = requirePassword();
+      if (!pw) return null;
+      let res;
+      try {
+        res = await fetch('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign({ action, password: pw }, payload)),
+        });
+      } catch (e) {
+        toast('Network error. Try again.', true);
+        return null;
+      }
+      let data = {};
+      try { data = await res.json(); } catch (e) {}
+      if (!res.ok) {
+        toast(data.error || ('Error (' + res.status + ')'), true);
+        return null;
+      }
+      return data;
+    }
+
+    // ------------------------------------------------------------
+    // Field template shared by existing + new cards
+    // ------------------------------------------------------------
+    function fieldsHtml(ev, idPrefix) {
+      ev = ev || {};
+      return ''
+        + '<div class="field">'
+        +   '<label for="' + idPrefix + '-day">Date or label</label>'
+        +   '<input type="text" id="' + idPrefix + '-day" data-f="day_label" value="' + esc(ev.day_label) + '" placeholder="e.g. Thu, Jun 11  (or  Always)">'
+        + '</div>'
+        + '<div class="field">'
+        +   '<label for="' + idPrefix + '-title">Title</label>'
+        +   '<input type="text" id="' + idPrefix + '-title" data-f="title" value="' + esc(ev.title) + '" placeholder="e.g. Trivia & LadyDawgs">'
+        + '</div>'
+        + '<div class="field">'
+        +   '<label for="' + idPrefix + '-details">Location / details</label>'
+        +   '<textarea id="' + idPrefix + '-details" data-f="details" placeholder="e.g. High Y&#39;all, 4809 Trousdale Dr, Nashville, TN">' + esc(ev.details) + '</textarea>'
+        + '</div>'
+        + '<div class="row2">'
+        +   '<div class="field">'
+        +     '<label for="' + idPrefix + '-time">Time</label>'
+        +     '<input type="text" id="' + idPrefix + '-time" data-f="time_text" value="' + esc(ev.time_text) + '" placeholder="e.g. 6:30 to 8:30 PM">'
+        +   '</div>'
+        +   '<div class="field">'
+        +     '<label for="' + idPrefix + '-linklabel">Button label (optional)</label>'
+        +     '<input type="text" id="' + idPrefix + '-linklabel" data-f="link_label" value="' + esc(ev.link_label) + '" placeholder="e.g. Map">'
+        +   '</div>'
+        + '</div>'
+        + '<div class="field">'
+        +   '<label for="' + idPrefix + '-linkurl">Button link (optional)</label>'
+        +   '<input type="text" id="' + idPrefix + '-linkurl" data-f="link_url" value="' + esc(ev.link_url) + '" placeholder="https://…">'
+        + '</div>'
+        + '<label class="check">'
+        +   '<input type="checkbox" data-f="is_standing"' + (ev.is_standing ? ' checked' : '') + '>'
+        +   '<span class="txt">Evergreen entry'
+        +     '<small>For standing notes like the Instagram follow line. Hides the map pin and clock icons.</small>'
+        +   '</span>'
+        + '</label>';
+    }
+
+    // Read the field values out of a card element.
+    function readCard(cardEl) {
+      const out = {};
+      cardEl.querySelectorAll('[data-f]').forEach(el => {
+        const f = el.getAttribute('data-f');
+        out[f] = el.type === 'checkbox' ? el.checked : el.value;
+      });
+      return out;
+    }
+
+    // ------------------------------------------------------------
+    // Render the saved list
+    // ------------------------------------------------------------
+    function render() {
+      if (!state.length) {
+        listEl.innerHTML = '<p class="empty">No events yet. Add one below.</p>';
+        return;
+      }
+      listEl.innerHTML = '';
+      state.forEach((ev, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.id = ev.id;
+        card.innerHTML =
+            '<div class="card-title-row">'
+          +   '<span class="card-index">#' + (i + 1) + '</span>'
+          +   '<span class="card-preview">' + (esc(ev.day_label) || 'Untitled') + (ev.title ? ' · ' + esc(ev.title) : '') + '</span>'
+          + '</div>'
+          + fieldsHtml(ev, 'e' + i)
+          + '<div class="card-actions">'
+          +   '<button class="btn-move" data-act="up" title="Move up" aria-label="Move up"' + (i === 0 ? ' disabled' : '') + '>↑</button>'
+          +   '<button class="btn-move" data-act="down" title="Move down" aria-label="Move down"' + (i === state.length - 1 ? ' disabled' : '') + '>↓</button>'
+          +   '<span class="spacer"></span>'
+          +   '<button class="btn-danger" data-act="delete">Delete</button>'
+          +   '<button class="btn-primary" data-act="save">Save changes</button>'
+          + '</div>';
+
+        card.querySelector('[data-act="save"]').addEventListener('click', () => saveEvent(ev.id, card));
+        card.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEvent(ev.id, ev));
+        card.querySelector('[data-act="up"]').addEventListener('click', () => move(i, -1));
+        card.querySelector('[data-act="down"]').addEventListener('click', () => move(i, 1));
+        listEl.appendChild(card);
+      });
+    }
+
+    function renderNewCard() {
+      const card = document.createElement('div');
+      card.className = 'card new';
+      card.innerHTML =
+          fieldsHtml({}, 'new')
+        + '<div class="card-actions">'
+        +   '<span class="spacer"></span>'
+        +   '<button class="btn-primary" data-act="create">Add event</button>'
+        + '</div>';
+      card.querySelector('[data-act="create"]').addEventListener('click', () => createEvent(card));
+      newCardEl.innerHTML = '';
+      newCardEl.appendChild(card);
+    }
+
+    // ------------------------------------------------------------
+    // Actions
+    // ------------------------------------------------------------
+    async function loadEvents() {
+      try {
+        const res = await fetch('/api/events', { headers: { 'Accept': 'application/json' } });
+        const data = await res.json();
+        state = Array.isArray(data.events) ? data.events : [];
+        render();
+      } catch (e) {
+        listEl.innerHTML = '<p class="empty">Could not load the schedule. Refresh to try again.</p>';
+      }
+    }
+
+    async function createEvent(card) {
+      const ev = readCard(card);
+      if (!ev.day_label.trim() && !ev.title.trim()) {
+        toast('Add at least a date/label or a title.', true);
+        return;
+      }
+      const data = await write('create', { event: ev });
+      if (!data) return;
+      toast('Event added.');
+      renderNewCard();          // reset the blank form
+      await loadEvents();
+    }
+
+    async function saveEvent(id, card) {
+      const ev = readCard(card);
+      const data = await write('update', { id, event: ev });
+      if (!data) return;
+      toast('Saved.');
+      await loadEvents();
+    }
+
+    async function deleteEvent(id, ev) {
+      const name = (ev.day_label || ev.title || 'this event').trim();
+      if (!window.confirm('Delete "' + name + '"? This cannot be undone.')) return;
+      const data = await write('delete', { id });
+      if (!data) return;
+      toast('Deleted.');
+      await loadEvents();
+    }
+
+    async function move(index, dir) {
+      const target = index + dir;
+      if (target < 0 || target >= state.length) return;
+      // Swap locally, then persist the whole order.
+      const ids = state.map(e => e.id);
+      const tmp = ids[index]; ids[index] = ids[target]; ids[target] = tmp;
+      const data = await write('reorder', { order: ids });
+      if (!data) return;
+      toast('Order updated.');
+      await loadEvents();
+    }
+
+    // ------------------------------------------------------------
+    // Boot
+    // ------------------------------------------------------------
+    renderNewCard();
+    loadEvents();
+  </script>
+</body>
+</html>

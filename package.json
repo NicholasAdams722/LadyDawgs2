@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
+  "devDependencies": {
     "puppeteer": "^24.42.0"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.38.0"
   }
 }
