@@ -18,6 +18,7 @@ const DEFAULT_EVENTS = [
     title: 'Trivia & LadyDawgs',
     details: "High Y'all, 4809 Trousdale Dr, Nashville, TN",
     time_text: '6:30 to 8:30 PM',
+    event_date: null,
     link_url: null,
     link_label: null,
     is_standing: false,
@@ -29,6 +30,7 @@ const DEFAULT_EVENTS = [
     title: 'Follow @la_ladydawgs',
     details: 'Daily location updates on Instagram',
     time_text: '',
+    event_date: null,
     link_url: null,
     link_label: null,
     is_standing: true,
@@ -69,9 +71,40 @@ async function readRaw(redis) {
   return arr || DEFAULT_EVENTS.map(e => ({ ...e }));
 }
 
-// Read events sorted for display.
-async function getEvents(redis) {
+// Today's date as YYYY-MM-DD in the cart's local time zone (Nashville /
+// Central). Used to decide which dated events have already passed.
+function currentDateStr() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Chicago',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(new Date());
+}
+
+// An event is "past" once its date is strictly before today (so it stays
+// visible through the end of its own day, then drops off the next day).
+// Standing entries and events without a date are never treated as past.
+function isPast(ev, today) {
+  if (ev.is_standing) return false;
+  if (!ev.event_date) return false;
+  return String(ev.event_date) < today;
+}
+
+// Read the events and permanently prune any that are past, persisting the
+// pruned list back to KV only when something actually changed. Returns the
+// remaining (active) events, unsorted.
+async function readActive(redis) {
   const events = await readRaw(redis);
+  const today = currentDateStr();
+  const active = events.filter(e => !isPast(e, today));
+  if (active.length !== events.length) {
+    await saveEvents(redis, active);
+  }
+  return active;
+}
+
+// Read active events sorted for display.
+async function getEvents(redis) {
+  const events = await readActive(redis);
   return events
     .slice()
     .sort((a, b) => (Number(a.position) || 0) - (Number(b.position) || 0));
@@ -115,6 +148,7 @@ function publicShape(row) {
     title: row.title,
     details: row.details,
     time_text: row.time_text,
+    event_date: row.event_date ?? null,
     link_url: row.link_url ?? null,
     link_label: row.link_label ?? null,
     is_standing: Boolean(row.is_standing),
@@ -125,7 +159,10 @@ module.exports = {
   kv,
   getEvents,
   readRaw,
+  readActive,
   saveEvents,
+  currentDateStr,
+  isPast,
   passwordOk,
   readJsonBody,
   publicShape,

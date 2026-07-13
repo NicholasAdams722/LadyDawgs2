@@ -87,6 +87,8 @@
       transition: border-color .18s ease, box-shadow .18s ease;
     }
     textarea { resize: vertical; min-height: 2.6rem; line-height: 1.5; }
+    input[type="date"] { color-scheme: dark; }
+    .hint-note { display: block; margin-top: .35rem; font-size: .72rem; font-weight: 400; color: rgba(253,245,228,.42); letter-spacing: 0; text-transform: none; line-height: 1.4; }
     input::placeholder, textarea::placeholder { color: rgba(253,245,228,.32); }
     input:focus, textarea:focus {
       outline: none;
@@ -290,9 +292,16 @@
     function fieldsHtml(ev, idPrefix) {
       ev = ev || {};
       return ''
-        + '<div class="field">'
-        +   '<label for="' + idPrefix + '-day">Date or label</label>'
-        +   '<input type="text" id="' + idPrefix + '-day" data-f="day_label" value="' + esc(ev.day_label) + '" placeholder="e.g. Thu, Jun 11  (or  Always)">'
+        + '<div class="row2">'
+        +   '<div class="field">'
+        +     '<label for="' + idPrefix + '-day">Date or label</label>'
+        +     '<input type="text" id="' + idPrefix + '-day" data-f="day_label" value="' + esc(ev.day_label) + '" placeholder="e.g. Thu, Jun 11  (or  Always)">'
+        +   '</div>'
+        +   '<div class="field">'
+        +     '<label for="' + idPrefix + '-date">Event date</label>'
+        +     '<input type="date" id="' + idPrefix + '-date" data-f="event_date" value="' + esc(ev.event_date) + '">'
+        +     '<small class="hint-note">Auto-removes the day after it passes. Leave blank for standing entries.</small>'
+        +   '</div>'
         + '</div>'
         + '<div class="field">'
         +   '<label for="' + idPrefix + '-title">Title</label>'
@@ -334,6 +343,20 @@
       return out;
     }
 
+    // When a date is picked and the display label is still empty, fill the
+    // label with a friendly formatted date (e.g. "Thu, Jun 11").
+    function attachDateAutofill(cardEl) {
+      const dateEl = cardEl.querySelector('[data-f="event_date"]');
+      const dayEl = cardEl.querySelector('[data-f="day_label"]');
+      if (!dateEl || !dayEl) return;
+      dateEl.addEventListener('change', () => {
+        if (dateEl.value && !dayEl.value.trim()) {
+          const d = new Date(dateEl.value + 'T00:00:00');
+          dayEl.value = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+      });
+    }
+
     // ------------------------------------------------------------
     // Render the saved list
     // ------------------------------------------------------------
@@ -365,6 +388,7 @@
         card.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEvent(ev.id, ev));
         card.querySelector('[data-act="up"]').addEventListener('click', () => move(i, -1));
         card.querySelector('[data-act="down"]').addEventListener('click', () => move(i, 1));
+        attachDateAutofill(card);
         listEl.appendChild(card);
       });
     }
@@ -379,6 +403,7 @@
         +   '<button class="btn-primary" data-act="create">Add event</button>'
         + '</div>';
       card.querySelector('[data-act="create"]').addEventListener('click', () => createEvent(card));
+      attachDateAutofill(card);
       newCardEl.innerHTML = '';
       newCardEl.appendChild(card);
     }

@@ -21,7 +21,7 @@
 const {
   kv,
   getEvents,
-  readRaw,
+  readActive,
   saveEvents,
   passwordOk,
   readJsonBody,
@@ -36,6 +36,10 @@ function cleanEvent(input = {}) {
   if (input.title       !== undefined) out.title       = String(input.title       ?? '');
   if (input.details     !== undefined) out.details     = String(input.details     ?? '');
   if (input.time_text   !== undefined) out.time_text   = String(input.time_text   ?? '');
+  if (input.event_date  !== undefined) {
+    const v = input.event_date;
+    out.event_date = (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? v : null;
+  }
   if (input.link_url    !== undefined) out.link_url    = input.link_url ? String(input.link_url) : null;
   if (input.link_label  !== undefined) out.link_label  = input.link_label ? String(input.link_label) : null;
   if (input.is_standing !== undefined) out.is_standing = Boolean(input.is_standing);
@@ -71,8 +75,9 @@ module.exports = async (req, res) => {
 
       const action = body.action;
       const redis = kv();
-      // Read the current list (seeds from defaults if the key is missing).
-      let events = await readRaw(redis);
+      // Read the current list (seeds from defaults if the key is missing) and
+      // prune any events that are already past before applying the change.
+      let events = await readActive(redis);
 
       if (action === 'create') {
         const row = cleanEvent(body.event);
@@ -82,7 +87,7 @@ module.exports = async (req, res) => {
         }
         const created = Object.assign(
           { id: newId(), day_label: '', title: '', details: '', time_text: '',
-            link_url: null, link_label: null, is_standing: false },
+            event_date: null, link_url: null, link_label: null, is_standing: false },
           row
         );
         events.push(created);
