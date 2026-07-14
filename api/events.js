@@ -29,7 +29,6 @@ const {
 // Whitelist of fields a write is allowed to set, with light coercion.
 function cleanEvent(input = {}) {
   const out = {};
-  if (input.day_label   !== undefined) out.day_label   = String(input.day_label   ?? '');
   if (input.title       !== undefined) out.title       = String(input.title       ?? '');
   if (input.details     !== undefined) out.details     = String(input.details     ?? '');
   if (input.time_text   !== undefined) out.time_text   = String(input.time_text   ?? '');
@@ -45,6 +44,19 @@ function cleanEvent(input = {}) {
     if (Number.isFinite(n)) out.position = Math.trunc(n);
   }
   return out;
+}
+
+// The displayed date label is derived, never entered by hand: evergreen
+// entries show "Always", dated entries show their formatted date (e.g.
+// "Thu, Jun 11"), and an entry with neither shows nothing.
+function deriveLabel(ev) {
+  if (ev.is_standing) return 'Always';
+  if (ev.event_date && /^\d{4}-\d{2}-\d{2}$/.test(ev.event_date)) {
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC',
+    }).format(new Date(ev.event_date + 'T00:00:00Z'));
+  }
+  return '';
 }
 
 module.exports = async (req, res) => {
@@ -89,6 +101,7 @@ module.exports = async (req, res) => {
             event_date: null, link_url: null, link_label: null, is_standing: false },
           row
         );
+        created.day_label = deriveLabel(created);
         events.push(created);
         await saveEvents(redis, events);
         res.status(201).json({ event: publicShape(created) });
@@ -100,6 +113,7 @@ module.exports = async (req, res) => {
         const idx = events.findIndex(e => e.id === body.id);
         if (idx === -1) { res.status(404).json({ error: 'Event not found.' }); return; }
         events[idx] = Object.assign({}, events[idx], cleanEvent(body.event));
+        events[idx].day_label = deriveLabel(events[idx]);
         await saveEvents(redis, events);
         res.status(200).json({ event: publicShape(events[idx]) });
         return;

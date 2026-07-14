@@ -258,16 +258,10 @@
     function fieldsHtml(ev, idPrefix) {
       ev = ev || {};
       return ''
-        + '<div class="row2">'
-        +   '<div class="field">'
-        +     '<label for="' + idPrefix + '-day">Date or label</label>'
-        +     '<input type="text" id="' + idPrefix + '-day" data-f="day_label" value="' + esc(ev.day_label) + '" placeholder="e.g. Thu, Jun 11  (or  Always)">'
-        +   '</div>'
-        +   '<div class="field">'
-        +     '<label for="' + idPrefix + '-date">Event date</label>'
-        +     '<input type="date" id="' + idPrefix + '-date" data-f="event_date" value="' + esc(ev.event_date) + '">'
-        +     '<small class="hint-note">Auto-removes the day after it passes. Leave blank for standing entries.</small>'
-        +   '</div>'
+        + '<div class="field">'
+        +   '<label for="' + idPrefix + '-date">Event date</label>'
+        +   '<input type="date" id="' + idPrefix + '-date" data-f="event_date" value="' + esc(ev.event_date) + '">'
+        +   '<small class="hint-note">The date shows on the site and the event auto-removes the day after it passes. Leave blank for a standing entry (see below).</small>'
         + '</div>'
         + '<div class="field">'
         +   '<label for="' + idPrefix + '-title">Title</label>'
@@ -309,20 +303,6 @@
       return out;
     }
 
-    // When a date is picked and the display label is still empty, fill the
-    // label with a friendly formatted date (e.g. "Thu, Jun 11").
-    function attachDateAutofill(cardEl) {
-      const dateEl = cardEl.querySelector('[data-f="event_date"]');
-      const dayEl = cardEl.querySelector('[data-f="day_label"]');
-      if (!dateEl || !dayEl) return;
-      dateEl.addEventListener('change', () => {
-        if (dateEl.value && !dayEl.value.trim()) {
-          const d = new Date(dateEl.value + 'T00:00:00');
-          dayEl.value = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-        }
-      });
-    }
-
     // ------------------------------------------------------------
     // Render the saved list
     // ------------------------------------------------------------
@@ -354,7 +334,6 @@
         card.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEvent(ev.id, ev));
         card.querySelector('[data-act="up"]').addEventListener('click', () => move(i, -1));
         card.querySelector('[data-act="down"]').addEventListener('click', () => move(i, 1));
-        attachDateAutofill(card);
         listEl.appendChild(card);
       });
     }
@@ -369,7 +348,6 @@
         +   '<button class="btn-primary" data-act="create">Add event</button>'
         + '</div>';
       card.querySelector('[data-act="create"]').addEventListener('click', () => createEvent(card));
-      attachDateAutofill(card);
       newCardEl.innerHTML = '';
       newCardEl.appendChild(card);
     }
@@ -390,8 +368,12 @@
 
     async function createEvent(card) {
       const ev = readCard(card);
-      if (!ev.day_label.trim() && !ev.title.trim()) {
-        toast('Add at least a date/label or a title.', true);
+      if (!ev.title.trim()) {
+        toast('Add a title.', true);
+        return;
+      }
+      if (!ev.event_date && !ev.is_standing) {
+        toast('Pick an event date, or check "Evergreen entry".', true);
         return;
       }
       const data = await write('create', { event: ev });
