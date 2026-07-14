@@ -639,6 +639,15 @@
     }
     .schedule-place { font-weight: 700; color: var(--cream); margin-bottom: .2rem; }
     .schedule-time { font-size: .875rem; color: rgba(253,245,228,.45); line-height: 1.55; }
+    .schedule-map {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(232,185,35,.45);
+      padding-bottom: 1px;
+      transition: color .2s ease, border-color .2s ease;
+    }
+    .schedule-map:hover { color: var(--mustard); border-bottom-color: var(--mustard); }
+    .schedule-map:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px; border-radius: 2px; }
     .schedule-link {
       display: inline-block;
       margin-top: .6rem;
@@ -1288,7 +1297,15 @@
         if (ev.is_standing) {
           timeInner = esc(ev.details);
         } else {
-          timeInner = PIN + esc(ev.details);
+          const addr = String(ev.details || '').trim();
+          if (addr) {
+            // Link the address to Google Maps, which hands off to the
+            // native maps / GPS app on phones.
+            const mapHref = 'https://www.google.com/maps/search/?api=1&amp;query=' + encodeURIComponent(addr);
+            timeInner = PIN + '<a class="schedule-map" href="' + mapHref + '" target="_blank" rel="noopener noreferrer" aria-label="Get directions to ' + esc(addr) + '">' + esc(ev.details) + '</a>';
+          } else {
+            timeInner = PIN + esc(ev.details);
+          }
           if (ev.time_text && String(ev.time_text).trim()) {
             timeInner += '<br>' + CLOCK + esc(ev.time_text);
           }
