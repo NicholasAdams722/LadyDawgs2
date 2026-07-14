@@ -1,29 +1,26 @@
 // LadyDawgs schedule API  (backed by Vercel KV / Upstash Redis)
 //
 //   GET  /api/events
-//     -> public, read-only. Returns every event ordered for display.
-//        If the KV store has no data yet, returns the two default events.
+//     -> returns every event ordered for display. If the KV store has no
+//        data, returns an empty list.
 //
 //   POST /api/events
-//     -> admin only. Body must include the correct { password }.
-//        The password is compared against the ADMIN_PASSWORD env var
-//        server-side and is never shipped to the browser.
-//        Supported actions (field "action"):
-//          create  : { password, action:"create", event:{...} }
-//          update  : { password, action:"update", id, event:{...} }
-//          delete  : { password, action:"delete", id }
-//          reorder : { password, action:"reorder", order:[id1, id2, ...] }
+//     -> writes the schedule. Supported actions (field "action"):
+//          create    : { action:"create", event:{...} }
+//          update    : { action:"update", id, event:{...} }
+//          delete    : { action:"delete", id }
+//          reorder   : { action:"reorder", order:[id1, id2, ...] }
+//          deleteAll : { action:"deleteAll" }   (clears the whole schedule)
 //
 // The whole schedule lives in one KV key ("ladydawgs:events") as a JSON
-// array of event objects. All connection details and the admin password are
-// read from environment variables. Nothing is hardcoded.
+// array of event objects. Connection details are read from environment
+// variables. Nothing is hardcoded.
 
 const {
   kv,
   getEvents,
   readActive,
   saveEvents,
-  passwordOk,
   readJsonBody,
   publicShape,
   newId,
@@ -68,15 +65,17 @@ module.exports = async (req, res) => {
     if (req.method === 'POST') {
       const body = await readJsonBody(req);
 
-      if (!passwordOk(body.password)) {
-        res.status(401).json({ error: 'Incorrect password.' });
+      const action = body.action;
+      const redis = kv();
+
+      // Clear the entire schedule.
+      if (action === 'deleteAll') {
+        await saveEvents(redis, []);
+        res.status(200).json({ ok: true });
         return;
       }
 
-      const action = body.action;
-      const redis = kv();
-      // Read the current list (seeds from defaults if the key is missing) and
-      // prune any events that are already past before applying the change.
+      // Read the current list and prune any past events before applying.
       let events = await readActive(redis);
 
       if (action === 'create') {

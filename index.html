@@ -1078,24 +1078,11 @@
         <p class="reveal d2">We're out there. Come say hi.</p>
       </div>
 
-      <!-- Schedule renders from /api/events on load. The two items below are
-           the fallback shown if that request fails or before it resolves. -->
+      <!-- Schedule renders from /api/events on load. The item below is the
+           fallback shown before it resolves, if the request fails, or when
+           there are no scheduled events yet. -->
       <div class="schedule-grid" id="schedule-grid" data-fallback="true">
         <div class="schedule-item reveal d1">
-          <p class="schedule-day">Thu, Jun 11</p>
-          <p class="schedule-place">Trivia &amp; LadyDawgs</p>
-          <p class="schedule-time">
-            <svg aria-hidden="true" width="12" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-1px; margin-right:.35rem; color:var(--mustard);">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>High Y'all, 4809 Trousdale Dr, Nashville, TN<br>
-            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-1px; margin-right:.35rem; color:var(--mustard);">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>6:30 to 8:30 PM
-          </p>
-        </div>
-        <div class="schedule-item reveal d2">
           <p class="schedule-day">Always</p>
           <p class="schedule-place">Follow @la_ladydawgs</p>
           <p class="schedule-time">Daily location updates on Instagram</p>

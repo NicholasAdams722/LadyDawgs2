@@ -6,36 +6,11 @@ const { Redis } = require('@upstash/redis');
 const crypto = require('crypto');
 
 const EVENTS_KEY = 'ladydawgs:events';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-// The two entries that were originally hardcoded on the site. Returned when
-// the KV key does not exist yet, and used to seed KV on the first write.
-const DEFAULT_EVENTS = [
-  {
-    id: 'seed-trivia',
-    position: 0,
-    day_label: 'Thu, Jun 11',
-    title: 'Trivia & LadyDawgs',
-    details: "High Y'all, 4809 Trousdale Dr, Nashville, TN",
-    time_text: '6:30 to 8:30 PM',
-    event_date: null,
-    link_url: null,
-    link_label: null,
-    is_standing: false,
-  },
-  {
-    id: 'seed-instagram',
-    position: 1,
-    day_label: 'Always',
-    title: 'Follow @la_ladydawgs',
-    details: 'Daily location updates on Instagram',
-    time_text: '',
-    event_date: null,
-    link_url: null,
-    link_label: null,
-    is_standing: true,
-  },
-];
+// The schedule starts empty. When there are no events, the public page falls
+// back to its built-in "Follow @la_ladydawgs" entry, so the section is never
+// blank. Events are added by the owner through /admin.
+const DEFAULT_EVENTS = [];
 
 // Build the Redis client from whichever env vars the store injected.
 // Vercel's Upstash/KV marketplace integration sets KV_REST_API_URL /
@@ -115,16 +90,6 @@ async function saveEvents(redis, events) {
   await redis.set(EVENTS_KEY, events);
 }
 
-// Constant-time password comparison so we never leak length/timing info.
-function passwordOk(supplied) {
-  if (!ADMIN_PASSWORD) return false;              // fail closed if misconfigured
-  if (typeof supplied !== 'string') return false;
-  const a = Buffer.from(supplied);
-  const b = Buffer.from(ADMIN_PASSWORD);
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
-}
-
 // Read the JSON body. Vercel usually parses it for us, but when the function
 // runs outside that pipeline (or the header is missing) we parse manually.
 async function readJsonBody(req) {
@@ -163,7 +128,6 @@ module.exports = {
   saveEvents,
   currentDateStr,
   isPast,
-  passwordOk,
   readJsonBody,
   publicShape,
   newId: () => crypto.randomUUID(),

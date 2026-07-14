@@ -58,22 +58,6 @@
     .sub a { color: var(--mustard); text-decoration: none; }
     .sub a:hover { text-decoration: underline; }
 
-    /* Password bar */
-    .pw-bar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(28,15,5,.92);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 1rem 1.15rem;
-      margin-bottom: 2.25rem;
-      box-shadow: 0 2px 0 rgba(0,0,0,.35), 0 14px 34px rgba(0,0,0,.35);
-    }
-    .pw-bar label { display: block; font-weight: 800; font-size: .85rem; letter-spacing: .02em; margin-bottom: .4rem; }
-    .pw-bar .hint { color: rgba(253,245,228,.5); font-weight: 400; font-size: .8rem; }
-
     label { color: var(--cream); }
     input[type="text"], input[type="password"], textarea {
       width: 100%;
@@ -210,11 +194,6 @@
       <p class="sub">Update the "Find our cart" schedule. Changes go live on <a href="/" target="_blank" rel="noopener">the website</a> right away.</p>
     </header>
 
-    <div class="pw-bar">
-      <label for="pw">Owner password <span class="hint">(needed to save any change)</span></label>
-      <input type="password" id="pw" placeholder="Enter your password" autocomplete="current-password">
-    </div>
-
     <h2 class="section-title">Current schedule</h2>
     <div id="list"><p class="loading">Loading schedule…</p></div>
 
@@ -232,7 +211,6 @@
     const $ = sel => document.querySelector(sel);
     const listEl = $('#list');
     const newCardEl = $('#new-card');
-    const pwEl = $('#pw');
     const statusEl = $('#status');
 
     let state = [];           // saved events from the server
@@ -252,26 +230,14 @@
       statusTimer = setTimeout(() => statusEl.classList.remove('show'), 3200);
     }
 
-    function requirePassword() {
-      const pw = pwEl.value.trim();
-      if (!pw) {
-        toast('Enter the owner password first.', true);
-        pwEl.focus();
-        return null;
-      }
-      return pw;
-    }
-
-    // POST a write action to the API with the password.
+    // POST a write action to the API.
     async function write(action, payload) {
-      const pw = requirePassword();
-      if (!pw) return null;
       let res;
       try {
         res = await fetch('/api/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(Object.assign({ action, password: pw }, payload)),
+          body: JSON.stringify(Object.assign({ action }, payload)),
         });
       } catch (e) {
         toast('Network error. Try again.', true);
