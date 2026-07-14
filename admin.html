@@ -99,6 +99,39 @@
     }
     .card.new { border-left-color: var(--crimson); }
 
+    /* Collapsible event rows */
+    .row {
+      background: rgba(46,26,14,.55);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--mustard);
+      border-radius: 10px;
+      margin-bottom: .6rem;
+      overflow: hidden;
+    }
+    .row[open] { box-shadow: 0 1px 0 rgba(0,0,0,.25), 0 10px 26px rgba(0,0,0,.22); }
+    .row-summary {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .85rem 1rem;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .row-summary::-webkit-details-marker { display: none; }
+    .row-summary:hover { background: rgba(232,185,35,.06); }
+    .row-summary:focus-visible { outline: 2px solid var(--mustard); outline-offset: -2px; }
+    .row-index {
+      font-family: 'Abril Fatface', serif; color: var(--mustard);
+      font-size: .95rem; background: rgba(232,185,35,.1);
+      border-radius: 6px; padding: .05rem .5rem; flex: none;
+    }
+    .row-day { font-family: 'Abril Fatface', serif; color: var(--mustard); font-size: 1.05rem; flex: none; }
+    .row-title { color: var(--cream); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row-title .muted { color: rgba(253,245,228,.4); font-weight: 400; font-style: italic; }
+    .row-spacer { flex: 1 1 auto; }
+    .row-chevron { color: rgba(253,245,228,.5); flex: none; transition: transform .2s ease; }
+    .row[open] .row-chevron { transform: rotate(180deg); }
+    .row-body { padding: 0 1.25rem 1.1rem; }
+
     .field { margin-bottom: .85rem; }
     .field:last-of-type { margin-bottom: 1rem; }
     .field > label {
@@ -194,11 +227,11 @@
       <p class="sub">Update the "Find our cart" schedule. Changes go live on <a href="/" target="_blank" rel="noopener">the website</a> right away.</p>
     </header>
 
-    <h2 class="section-title">Current schedule</h2>
-    <div id="list"><p class="loading">Loading schedule…</p></div>
-
     <h2 class="section-title">Add a new event</h2>
     <div id="new-card"></div>
+
+    <h2 class="section-title">Current schedule</h2>
+    <div id="list"><p class="loading">Loading schedule…</p></div>
 
   </div>
 
@@ -308,33 +341,44 @@
     // ------------------------------------------------------------
     function render() {
       if (!state.length) {
-        listEl.innerHTML = '<p class="empty">No events yet. Add one below.</p>';
+        listEl.innerHTML = '<p class="empty">No events yet. Add one above.</p>';
         return;
       }
       listEl.innerHTML = '';
       state.forEach((ev, i) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.dataset.id = ev.id;
-        card.innerHTML =
-            '<div class="card-title-row">'
-          +   '<span class="card-index">#' + (i + 1) + '</span>'
-          +   '<span class="card-preview">' + (esc(ev.day_label) || 'Untitled') + (ev.title ? ' · ' + esc(ev.title) : '') + '</span>'
-          + '</div>'
-          + fieldsHtml(ev, 'e' + i)
-          + '<div class="card-actions">'
+        const row = document.createElement('details');
+        row.className = 'row';
+        row.dataset.id = ev.id;
+        const day = esc(ev.day_label) || 'Untitled';
+        const title = ev.title ? esc(ev.title) : '<span class="muted">(no title)</span>';
+        row.innerHTML =
+            '<summary class="row-summary">'
+          +   '<span class="row-index">#' + (i + 1) + '</span>'
+          +   '<span class="row-day">' + day + '</span>'
+          +   '<span class="row-title">' + title + '</span>'
+          +   '<span class="row-spacer"></span>'
           +   '<button class="btn-move" data-act="up" title="Move up" aria-label="Move up"' + (i === 0 ? ' disabled' : '') + '>↑</button>'
           +   '<button class="btn-move" data-act="down" title="Move down" aria-label="Move down"' + (i === state.length - 1 ? ' disabled' : '') + '>↓</button>'
-          +   '<span class="spacer"></span>'
-          +   '<button class="btn-danger" data-act="delete">Delete</button>'
-          +   '<button class="btn-primary" data-act="save">Save changes</button>'
+          +   '<span class="row-chevron" aria-hidden="true">▾</span>'
+          + '</summary>'
+          + '<div class="row-body">'
+          +   fieldsHtml(ev, 'e' + i)
+          +   '<div class="card-actions">'
+          +     '<span class="spacer"></span>'
+          +     '<button class="btn-danger" data-act="delete">Delete</button>'
+          +     '<button class="btn-primary" data-act="save">Save changes</button>'
+          +   '</div>'
           + '</div>';
 
-        card.querySelector('[data-act="save"]').addEventListener('click', () => saveEvent(ev.id, card));
-        card.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEvent(ev.id, ev));
-        card.querySelector('[data-act="up"]').addEventListener('click', () => move(i, -1));
-        card.querySelector('[data-act="down"]').addEventListener('click', () => move(i, 1));
-        listEl.appendChild(card);
+        // Reorder buttons live in the summary; keep them from toggling the row.
+        const wire = (sel, fn) => row.querySelector(sel).addEventListener('click', e => {
+          e.preventDefault(); e.stopPropagation(); fn();
+        });
+        wire('[data-act="up"]', () => move(i, -1));
+        wire('[data-act="down"]', () => move(i, 1));
+        row.querySelector('[data-act="save"]').addEventListener('click', () => saveEvent(ev.id, row));
+        row.querySelector('[data-act="delete"]').addEventListener('click', () => deleteEvent(ev.id, ev));
+        listEl.appendChild(row);
       });
     }
 
